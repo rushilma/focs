@@ -1,9 +1,9 @@
 /// Module for thesis environments
 
 #import "@preview/ctheorems:1.1.3": *
-// #show: thmrules.with(qed-symbol: $square$)
+#show: thmrules.with(qed-symbol: $square$)
 
-#let thmpadding = (top: 0em, bottom: 0.4em)
+#let thmpadding = (top: 0em, bottom: 0.6em)
 
 #let thmthesis = thmbox.with(
   padding: thmpadding,
@@ -14,15 +14,6 @@
   titlefmt: strong,
   base_level: 1,
 )
-
-/*
-#let theorem = thmbox(
-  "theorem",
-  "Theorem",
-  breakable: true,
-  fill: rgb("#eeffee"),
-)
-*/
 
 #let theorem = thmthesis(
   "theorem",
@@ -65,6 +56,3 @@
   inset: 0em,
   padding: thmpadding,
 )
-
-
-

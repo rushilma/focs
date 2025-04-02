@@ -57,6 +57,7 @@ While today, Merkle-Hellman is but a footnote in the history of cryptography, it
 
 // physics and phase transition
 
+=== Meow moe wmeow
 Another major source of interest in the NPP, as well as potential explanations for when it is hard, come from statistical physics.
 In the 1980s, Derrida introduced the eponymous _random energy model (REM)_, a simplified example of a spin glass in which, unlike the Sherrington-Kirkpatrick or other $p$-spin glass models, the possible energy levels are independent of each other @derridaRandomEnergyModelLimit1980 @derridaRandomenergyModelExactly1981 @baukeNumberPartitioningRandom2004.
 Despite this simplicity, this model made possible heuristic analyses of the Parisi theory for mean field spin glasses, and it was suspected that arbitrary random discrete systems would locally behave like the REM @baukeUniversalityLevelStatistics2004 @kistlerDerridasRandomEnergy2014.
@@ -224,13 +225,13 @@ We conclude in @section_rounding by extending our results to the case of $RR^N$-
 
 == Conventions and Fundamentals
 
-We use the standard Bachmann-Landau notations $o(dots), O(dot), omega(dot), Omega(dot), Theta(dot)$, taken in the limit $N to infinity$. In addition, we write $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, or $f(N) = omega(g(N))$, respectively.
+We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$. In addition, we write $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, or $f(N) = omega(g(N))$, respectively.
 
 We write $[N] := {1,dots,N}$. If $S subeq [N]$, then $overline(S) := [N] without S$ is the complimentary set of indices. If $x in RR^N$ and $S subeq [N]$, then $x_S$ is the vector with
 $ (x_S)_i := cases(x_i #h(2em) &i in S\,, 0 &"else.") $
 In particular, for $x,y in RR^N$, $inn(x_S, y) = inn(x,y_S) = inn(x_S,y_S)$.
 
-On $RR^N$, we write $norm(dot)$ for the Euclidean norm, and $B(x,r) := { y in RR^N : norm(y-x) < r}$ for the Euclidean ball of radius $r$ around $x$.
+On $RR^N$, we write $norm(dot)$ for the Euclidean norm, and $ball(x,r) := { y in RR^N : norm(y-x) < r}$ for the Euclidean ball of radius $r$ around $x$.
 We use $Normal(mu,sigma^2)$ to denote the scalar Normal distribution with given mean and variance. In addition, we write "i.i.d." to mean independently and identically distributed, and "r.v." to mean random variable (or random vector, if it is clear from context).
 
 Throughout the remainder of this thesis, we will make use of the following general results:

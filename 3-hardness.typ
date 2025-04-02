@@ -179,7 +179,7 @@ To this end, we start by bounding the size of neighborhoods on $Sigma_N$.
 #proposition[Hypercube Neighborhood Size][
   Fix $x in Sigma_N$, and let $eta <= 1 slash 2$. Then the number of $x'$ within distance $2 sqrt(eta N)$ of $x$ is bounded by
   $
-    abs({x' in Sigma_N : norm(x-x') <= 2eta sqrt(N)})
+    abs({x' in Sigma_N : norm(x-x') <= 2sqrt(eta N)})
     <= exp_2 (2 eta log_2 (1 slash eta)N ).
   $
 ] <lem_hypercube_counting>

@@ -1,5 +1,7 @@
 # Rushil Mallarapu - Senior Thesis
 
+FOCS version
+
 _NOTE: `5-litref.typ` is fake chapter - just there for my sake to organize writing for chapter 1._
 
 # How to build

@@ -7,7 +7,7 @@
 
 #let purple = rgb(128, 0, 76)
 
-#import "thesisize.typ": *
+#import "focs.typ": *
 
 #let abstract = [
   Finding good solutions to the _number partitioning problem (NPP)_ -- that is, finding a partition of a set of $N$ numbers to minimize the discrepancy between the sums of the two subsets -- is a well-studied optimization problem, with applications to statistics, physics, and computer science.
@@ -40,7 +40,7 @@
 
 ]
 
-#show: thesisize.with(
+#show: focs.with(
   title: [Strong Low Degree Hardness for \ the Number Partitioning Problem],
   // subtitle: [Strong Low Degree Hardness for the Number Partitioning Problem],
   abstract: abstract,

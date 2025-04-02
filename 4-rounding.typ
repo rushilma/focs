@@ -32,30 +32,29 @@ This can then be leveraged to show that any sufficiently randomized rounding sch
 
 Throughout this section, fix a distance $r=O(1)$.
 Consider the event that the $RR^N$-valued algorithm $alg$ outputs a point close to a solution for an instance $g$:
-#let ball(x, y) = $B(#x,#y)$
 $
   S_"close" (r) = multiset(
     exists hat(x) in Soln(g) "s.t.",
     alg(g) in ball(hat(x), r)
-  ) = {B(alg(g), r) inter Soln(g) != emptyset }.
+  ) = {ball(alg(g), r) inter Soln(g) != emptyset }.
 $
 
 Note that since $r$ is of constant order, we can convert $alg$ into a $Sigma_N$-valued algorithm by first rounding the $alg(g)$ into the solid binary hypercube and then picking the best corner of $Sigma_N$ within constant distance of this output.
 
-Let $cube colon RR^N to [-1,1]^N$ be the function which rounds $x in RR^N$ into the cube $[-1,1]^N$:
+Let $clip colon RR^N -> [-1,1]^N$ be the function which rounds $x in RR^N$ into the cube $[-1,1]^N$:
 $
-  cube(x)_i = cases(-1 #h(1em) &x_i <= -1\,, x_i &-1 < x_i < 1\,, 1 &x_i >= 1.)
+  clip(x)_i = cases(-1 #h(1em) &x_i <= -1\,, x_i &-1 < x_i < 1\,, 1 &x_i >= 1.)
 $
-Note that $cube$ is $1$-Lipschitz with respect to the Euclidean norm.
+Note that $clip$ is $1$-Lipschitz with respect to the Euclidean norm.
 
 // definition of hat alg
 
 #definition[
   Let $r>0$ and $alg$ be an algorithm. Define the $[-1,1]^N$-valued algorithm $hat(alg)_r$ by
   $
-    hat(alg)_r (g) := limits("argmin")_(x' in B(cube(alg(g)),r) inter Sigma_N) abs(inn(g,x')).
+    hat(alg)_r (g) := limits("argmin")_(x' in ball(clip(alg(g)),r) inter Sigma_N) abs(inn(g,x')).
   $ <eq_hat_alg>
-  If $B(cube(alg(g)),r) inter Sigma_N = emptyset$, then set $hat(alg)_r (g) := cube(alg(g))$, which is necessarily not in $Sigma_N$.
+  If $ball(clip(alg(g)),r) inter Sigma_N = emptyset$, then set $hat(alg)_r (g) := clip(alg(g))$, which is necessarily not in $Sigma_N$.
 ] <def_hat_alg>
 
 Observe that $S_"close" (r)$ occurring implies $hat(alg)_r$ finds a solution for $g$.
@@ -81,12 +80,12 @@ Adjusting the bounds, this modification $hat(alg)_r$ of $alg$ is also stable.
 #proof[
   Observe that by the triangle inequality, $ norm(hat(alg)_r (g) &- hat(alg)_r (g'))$ is bounded by
   $
-    norm(hat(alg)_r (g) - cube(alg(g))) +
-    norm(cube(alg(g)) - cube(alg(g'))) +
-    norm(cube(alg(g')) - hat(alg)_r (g')) \
+    norm(hat(alg)_r (g) - clip(alg(g))) +
+    norm(clip(alg(g)) - clip(alg(g'))) +
+    norm(clip(alg(g')) - hat(alg)_r (g')) \
     <= 2r + norm(alg(g) - alg(g')).
   $
-  This follows as $cube$ is $1$-Lipschitz and the corner-picking step in @eq_hat_alg only moves $hat(alg)_r (g)$ from $cube(alg(r))$ by at most $r$.
+  This follows as $clip$ is $1$-Lipschitz and the corner-picking step in @eq_hat_alg only moves $hat(alg)_r (g)$ from $clip(alg(r))$ by at most $r$.
   By Jensen's inequality, squaring this gives
   $
     norm(hat(alg)_r (g) - hat(alg)_r (g'))^2 <=
@@ -132,7 +131,7 @@ Observe that since $hat(p)^cor _"cond"$ makes no reference to any algorithm, the
 ] <lem_hat_resampled_solve_prob>
 #proof[
   Observe that, letting $+$ denote Minkowski sum, we have
-  $ { hat(alg)_r (g) in Soln(g) } = { cube(alg(g)) in Soln(g) + B(0,r) }. $
+  $ { hat(alg)_r (g) in Soln(g) } = { clip(alg(g)) in Soln(g) + ball(0,r) }. $
   Expanding $Soln(g)$, the proof proceeds as in @lem_resampled_solve_prob.
 ]
 

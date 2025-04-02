@@ -13,6 +13,7 @@
 #let corr(x, y) = $"corr"(#x, #y)$
 #let exp2(x) = $exp_2 lr(paren.l #x paren.r)$
 #let log2(x) = $log_2 lr(paren.l #x paren.r)$
+#let ball(x, y) = $B_(#y)(#x)$
 
 #let cdeg(x) = $"cdeg"lr(paren.l #x paren.r)$
 
@@ -26,11 +27,13 @@
 #let Normal(x, y) = $cal(N)lr(paren.l #x, #y paren.r)$
 #let stdnorm = $Normal(0,I_N)$
 
-#let L2iid = $L^2(RR^N,pi^(times.circle N))$
 #let subeq = $subset.eq$
-#let round = $sans("round")$
-#let cube = $sans("cube")$
 
+#let round = $sans("round")$
+#let sign = $sans("sign")$
+#let clip = $sans("clip")$
+
+#let L2iid = $L^2(RR^N,pi^(times.circle N))$
 #let L2norm = $L^2(RR,gamma)$
 #let L2normN = $L^2(RR^N,gamma^N)$
 
