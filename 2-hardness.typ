@@ -1,11 +1,10 @@
 #import "focs.typ": *
 
-= Hardness for Low Degree Algorithms
+= Hardness for Low Degree Algorithms <section_hardness>
 
 meow determinsitc Sigma_N valued assumption
 
 
-// linear low degree hardness
 #theorem[Hardness for LDP Algorithms][
   Let $g$ and $g'$ be $(1-epsilon)$-correlated standard Normal random vectors.
   Let $alg$ be any degree $D$ polynomial algorithm with $EE norm(alg(g))^2 <= C N$.
@@ -22,12 +21,12 @@ meow determinsitc Sigma_N valued assumption
   Let $alg$ be any coordinate degree $D$ algorithm with $EE norm(alg(g))^2 <= C N$.
   Assume that
   + if $E = delta N$ for $delta > 0$, then $D <= o(N)$;
-  + if $omega(log N) <= E <= o(N)$, then $D <= o(E slash log^2 E)$.
+  + if $omega(log^2 N) <= E <= o(N)$, then $D <= o(E slash log^2 E)$.
   Then there exist $epsilon=epsilon(N,D)>0$ and $eta=eta(N,E)>0$ such that
   $ PP(alg(g) in Soln(g)) = o(1). $
 ] <thrm_sldh_lcd>
 
-== Preliminary Estimates
+== Preliminary Estimates <section_hardness_prelim>
 
 #lemma[Normal Small-Probability Estimate][
   Let $E,sigma^2 > 0$, and suppose $Z | mu ~ Normal(mu,sigma^2)$. Then
@@ -77,7 +76,7 @@ Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if t
   In addition
   + if $E = Theta(N)$, this $eta$ is $O(1)$;
   + if $E <= o(N)$, this $eta$ satisfies $eta gt.tilde E slash N log_2(N)$.
-] <prop_eta_choice>
+] <lem_eta_choice>
 #proof[
   (a) For $E=Theta(N)$, $E slash N$ is bounded by an $N$-independent constant $delta > 0$. It is thus possible to find some $eta= O(1)$ such that $- 2 eta log_2 eta < delta slash 4$, as desired.
 
@@ -89,7 +88,7 @@ Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if t
   We can verify numerically that for $N$ sufficiently large (hence $E slash N$ sufficiently small) this choice gives $2 eta log_2(1 slash eta) < E slash 4N$.
 ]
 
-== Conditional obstruction
+== Conditional obstruction <section_hardness_clo>
 
 Thus, within a small neighborhood of any $x in Sigma_N$, the number of nearby points is exponential in $N$, with a more nontrivial dependence on $eta$. The question is then how many of these are solutions to the correlated instance $g'$. This forms the heart of our conditional landscape obstruction.
 
@@ -128,7 +127,7 @@ Thus, within a small neighborhood of any $x in Sigma_N$, the number of nearby po
   $ <eq_clo_firstmoment>
   Note in particular that the range of this sum is independent of the inner probability, as $g'$ and $x$ are conditionally independent.
   // hypercube count
-  To bound the number of terms in @eq_clo_firstmoment, let $k$ is the number of coordinates which differ between $x$ and $x'$ (i.e., the Hamming distance), so that
+  To bound the number of terms in @eq_clo_firstmoment, let $k$ be the number of coordinates which differ between $x$ and $x'$, so that
   $norm(x-x')^2=4k$.
   Thus $norm(x-x') <= 2 sqrt(eta N)$ if and only if $k <= N eta < N slash 2$, so by @lem_chernoff_hoeffding,
   $
@@ -195,7 +194,7 @@ meow correlated pairs
 ]
 
 #remark[
-  Note that @lem_correlated_solve_prob also holds in the case where $alg(g,omega)$ is randomized, in the sense of @def_algorithm.
+  Note that @lem_correlated_solve_prob also holds in the case where $alg(g,omega)$ is randomized, in the sense of ().
   meow
   Namely, write
   $
@@ -208,7 +207,7 @@ meow correlated pairs
 ] // <rmk_randomized_multiple_solve>
 
 
-== Proof of Hardness for LDP Algorithms
+== Proof of Hardness for LDP Algorithms <section_hardness_ldp>
 
 // Hardness for Low Coordinate Degree Algorithms <section_hardness_lcd>
 
@@ -225,7 +224,7 @@ $
     exists.not x' in Soln(g') "such that",
     norm(x-x') <= 2sqrt(eta N),
   ).
-$ <eq_poly_events>
+$ <eq_ldp_events>
 
 Intuitively, the first two events ask that the algorithm solves both instances and is stable, respectively.
 The last event, which depends on $x$, corresponds to the conditional landscape obstruction: for an $x$ depending only on $g$, there is no solution to $g'$ which is close to $x$.
@@ -249,7 +248,7 @@ The last event, which depends on $x$, corresponds to the conditional landscape o
     #h(4em)
     p_"unstable" := 1 - PP_corr(g,g',1-epsilon)(S_"stable"),
   $
-  Set $epsilon := 2^(-E slash 2)$ and set $eta$ as in @prop_eta_choice.
+  Set $epsilon := 2^(-E slash 2)$ and set $eta$ as in @lem_eta_choice.
   By @lem_clo, for $N$ sufficiently large,
   $
     p_"cond" &<= exp_2 (-E - 1 / 2 log_2 (epsilon) + 2 eta log_2 (1 / eta) N + O(log N)) \
@@ -294,7 +293,7 @@ $
     norm(x-x') <= 2sqrt(eta N),
   ).
 $ <eq_lcd_events>
-Note that these are the same events as @eq_poly_events, plus the event that $g'$ is nontrivially resampled from $g$.
+Note that these are the same events as @eq_ldp_events, plus the event that $g'$ is nontrivially resampled from $g$.
 
 #lemma[
   For $g,g'$ being $(1-epsilon)$-resampled,
@@ -331,8 +330,8 @@ We can interpret this as saying $S_"solve", S_"stable", S_"cond"$ are all mutual
     p_"cond" := max_(x in Sigma_N) 1 - PP_resp(g,g',1-epsilon)(S_"cond" (x) | S_"diff"),
     #h(2em)
     p_"unstable" := 1 - PP_resp(g,g',1-epsilon)(S_"stable" | S_"diff").
-  $
-  Setting $eta$ as in @prop_eta_choice, we have by @lem_clo that
+  $ <eq_def_lcd_pcondunstable>
+  Setting $eta$ as in @lem_eta_choice, we have by @lem_clo that
   $
     p_"cond" <= exp_2 (- E + 2 eta log_2 (1 / eta) N + O(1) ) <= exp_2 (-(3 E) / 4 + O(1)) = o(1).
   $
@@ -366,14 +365,14 @@ We can interpret this as saying $S_"solve", S_"stable", S_"cond"$ are all mutual
   $
 ]
 
-
+meow
 
 // Linear case
 With this, we can show strong low degree hardness for low coordinate degree algorithms at linear energy levels $E=Theta(N)$. As before, this corresponds to hardness at the statistically optimal energy regime, but now applies to an extremely broad category of algorithms.
 
 
-Finally, combining the ideas behind @thrm_sldh_poly_sublinear and our conditional landscape obstruction for $(1-epsilon)$-resampled Normal random variables, we can show hardness for algorithms with low coordinate degree at sublinear energy levels, ranging from $log^2 N << E << N$.
-Here we have to increase our lower bound to $log^2 N$ as opposed to $log N$ from @thrm_sldh_poly_sublinear, to address the requirement that $epsilon=omega(1 slash N)$, but this still enables us to "close" the statistical-to-computational gap by proving hardness in this range.
+// Finally, combining the ideas behind @thrm_sldh_ldp_sublinear and our conditional landscape obstruction for $(1-epsilon)$-resampled Normal random variables, we can show hardness for algorithms with low coordinate degree at sublinear energy levels, ranging from $log^2 N << E << N$.
+// Here we have to increase our lower bound to $log^2 N$ as opposed to $log N$ from @thrm_sldh_ldp_sublinear, to address the requirement that $epsilon=omega(1 slash N)$, but this still enables us to "close" the statistical-to-computational gap by proving hardness in this range.
 Note also that our method also allows us to derive a clear tradeoff between solution energy and algorithm degree.
 
 #remark[Tightness of Coordinate Degree Bounds][
@@ -396,7 +395,7 @@ Note also that our method also allows us to derive a clear tradeoff between solu
       Thus, at this stage, we can brute force search over the remaining $J$ coordinates, which gives a solution with energy $E$ with high probability, in $e^(O(E))$ time.
     ],
   )
-  In particular, this suggests that our results @thrm_sldh_lcd_linear and @thrm_sldh_lcd_sublinear are optimal under the low degree heuristic.
+  In particular, this suggests that @thrm_sldh_lcd is optimal under the low degree heuristic.
   Namely, low degree hardness of finding solutions with energy $E$ holds up to degree $tilde(o)(E)$, which implies finding such solutions requires at least time $e^(tilde(Omega)(E))$.
   This restricted brute force strategy shows that it is indeed possible to find these solutions in time $e^(tilde(O)(E))$, implying that our method gives the optimal energy-runtime tradeoff.
 ] <rmk_optimal>
@@ -410,7 +409,7 @@ As a final remark, consider that an algorithm with coordinate degree $Omega(N)$ 
 Intuitively, such an algorithm is forced to look at how a large number of instance elements balance against each other, giving further evidence to the claim that any sufficiently local algorithm for the NPP will be no better than random search.
 The good algorithms must be global, which reflects recent developments in heuristics for computing solutions to the NPP @kraticaTwoMetaheuristicApproaches2014 @corusArtificialImmuneSystems2019 @santucciImprovedMemeticAlgebraic2021.
 
-== Extensions to Close Algorithms
+== Extensions to Close Algorithms <section_hardness_close>
 
 In @section_hardness, we have established strong low degree hardness for both low degree polynomial and low coordinate degree algorithms.
 However, our stability analysis assumed that the algorithms in question were $Sigma_N$-valued.
@@ -438,6 +437,36 @@ This can then be leveraged to show that any sufficiently randomized rounding sch
 
 ------------
 
+Of course, our construction of $hat(alg)_r$ is certainly never polynomial and does not preserve coordinate degree in a controllable way.
+// Thus, we cannot directly hope for @thrm_sldh_ldp_linear, @thrm_sldh_ldp_sublinear, @thrm_sldh_lcd_linear, or @thrm_sldh_lcd_sublinear to hold.
+However, because this rounding does not drastically alter the stability analysis, we are still able to show that for any $RR^N$-valued low coordinate degree algorithm $alg$ and $r=O(1)$, strong low degree hardness holds for $hat(alg)_r$.
+The same argument proves hardness when $alg$ is a low degree polynomial algorithm; this is omitted for brevity.
+
+Throughout this section, fix a distance $r=O(1)$.
+Consider the event that the $RR^N$-valued algorithm $alg$ outputs a point close to a solution for an instance $g$:
+$
+  S_"close" (r) = multiset(
+    exists hat(x) in Soln(g) "s.t.",
+    alg(g) in ball(hat(x), r)
+  ) = {bball(alg(g), r) != emptyset }.
+$
+
+recall $hat(alg)$ from @section_algorithms
+
+#theorem[Hardness for Close LCD Algorithms][
+  Let $g$ and $g'$ be $(1-epsilon)$-resampled standard Normal random vectors.
+  Let $r>0$ be an $N$-independent constant and $alg$ be any coordinate degree $D$ algorithm with $EE norm(alg(g))^2 <= C N$.
+  Assume that
+  + if $E = delta N$ for $delta > 0$, then $D <= o(N)$;
+  + if $omega(log^2 N) <= E <= o(N)$, then $D <= o(E slash log^2 E)$.
+  Then there exist $epsilon=epsilon(N,D)>0$ and $eta=eta(N,E)>0$ such that
+  $ PP(S_"close" (r)) <= PP(hat(alg)_r (g) in Soln(g)) = o(1). $
+] <thrm_sldh_hat_lcd>
+
+
+
+
+
 Throughout this section, fix a distance $r=O(1)$.
 Consider the event that the $RR^N$-valued algorithm $alg$ outputs a point close to a solution for an instance $g$:
 $
@@ -446,3 +475,67 @@ $
     alg(g) in ball(hat(x), r)
   ) = {ball(alg(g), r) inter Soln(g) != emptyset }.
 $
+
+meow explain ideas going on
+
+/*
+
+We recall the setup from @section_hardness_lcd.
+Let $g,g'$ be $(1-epsilon)$-resampled standard Normal vectors and define the events
+$
+  S_"diff" &:= { g != g'}, \
+  S_"solve" &:= { hat(alg)_r (g) in Soln(g), hat(alg)_r (g') in Soln(g')}, \
+  S_"stable" &:= { norm(hat(alg)_r (g) - hat(alg)_r (g')) <= 2 sqrt(eta N) }, \
+  S_"cond" (x) &:= multiset(
+    exists.not x' in Soln(g') "such that",
+    norm(x-x') <= 2sqrt(eta N),
+  ).
+$ <eq_lcd_hat_events>
+
+These are the same events as in @eq_lcd_events, just adapted to $hat(alg)_r$. In particular, @lem_lcd_solve_disjoint holds unchanged.
+
+Moreover, we define
+$
+  hat(p)^cor_"solve" := PP(hat(alg)_r (g) in Soln(g)) >= PP(S_"close" (r)),
+$ <eq_def_lcd_hat_psolve>
+$
+  hat(p)^cor _"unstable" := 1 - PP(S_"stable" | S_"diff"), #h(3em)  hat(p)^cor _"cond" (x) := 1 - PP(S_"cond" (x) | S_"diff"),
+$
+along with $hat(p)^cor _"cond" := max_(x in Sigma_N) hat(p)^cor _"cond" (x)$, echoing () // @eq_def_lcd_punstablecond.
+Observe that since $hat(p)^cor _"cond"$ makes no reference to any algorithm, the bound in (meow) holds without change.
+Moreover, @lem_hat_alg_stability lets us control $hat(p)^cor _"unstable"$.
+The final piece needed is an appropriate analog of () // @lem_resampled_solve_prob.
+
+#lemma[
+  For $g,g'$ being $(1-epsilon)$-resampled, we have
+  $
+    PP(S_"solve") = PP(hat(alg)_r (g) in Soln(g), hat(alg)_r (g') in Soln(g')) >= (hat(p)^cor_"solve")^2.
+  $
+] <lem_hat_resampled_solve_prob>
+#proof[
+  Observe that, letting $+$ denote Minkowski sum, we have
+  $ { hat(alg)_r (g) in Soln(g) } = { clip(alg(g)) in Soln(g) + ball(0,r) }. $
+  Expanding $Soln(g)$, the proof proceeds as in () // meow @lem_resampled_solve_prob.
+]
+*/
+
+#proof[of @thrm_sldh_hat_lcd][
+  We maintain the setup of the proof of @thrm_sldh_lcd.
+  Let $x := hat(alg)_r (g)$
+  and define the events $S_"diff"$, $S_"solve"$, $S_"stable"$, and $S_"cond" (x)$ as in @eq_lcd_events, replacing $alg$ with $hat(alg)_r$.
+  Let $p_"solve" := PP(hat(alg)_r (g) in Soln(g))$; letting $S$ be the event ${ hat(alg)_r (g) in Soln(g) } = {clip(alg(g)) in Soln(g) + ball(0,r) }$, @lem_correlated_solve_prob ensures $PP_resp(g,g',1-epsilon) (S_"solve") >= p_"solve"^2$.
+
+  and keep the same definitions of $p_"unstable"$ and $p_"cond"$ as in @eq_def_lcd_pcondunstable, replacing $alg$ with $hat(alg)_r$.
+  We again choose $epsilon := log_2(N slash D)/N$, so that $PP(S_"diff") -> 1$.
+  Additionally, choose $eta$ as @lem_eta_choice, so that $p_"cond" = o(1)$.
+
+  It then suffices to show that $p_"unstable" = o(1)$. To see this, recall that
+  when $E = delta N$, our choice of $eta$ is $O(1)$, so $r^2/(eta N) = o(1)$.
+  In the sublinear case, for $eta= E slash (16 N log_2 (N slash E))$, we instead get
+  $ eta N gt.tilde E / (N log_2 N) dot N >= E / (log_2 N) = omega(1), $
+  since $E >> log^2 N$.
+  Applying the properly modified @lem_hat_alg_stability -- knowing that the first term bounding $p_"unstable"$ is $o(1)$ with these choices of $epsilon$ and $eta$ -- we see that $hat(p)_"unstable" = o(1)$, as desired.
+]
+
+Note that as $p_"solve"$ upper bounds $PP(S_"close" (r))$, this argument shows algorithmic hardness for low degree $RR^N$-valued algorithms aiming to output points within constant distance of a solution.
+

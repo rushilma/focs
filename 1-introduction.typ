@@ -193,7 +193,7 @@ Our results show _strong low degree hardness_ for the NPP at energy levels betwe
 There are two related notions of degree which we want to consider in @def_sldh.
 The first is traditional polynomial degree, applicable for algorithms given in each coordinate by low degree polynomial functions of the inputs. In this case, we show
 
-#theorem[Results of @section_hardness_poly][
+#theorem[Results of @section_hardness_ldp][
   The NPP exhibits SLDH for degree $D$ polynomial algorithms, for
   #enum(
     [$D <= o(exp_2(delta N slash 2))$ when $E = delta N$ for $delta > 0$;],
@@ -215,11 +215,13 @@ While related to polynomial degree, this enables us to consider a far broader cl
 These results are likely to be the best-possible under the low degree heuristic, which we discuss in @rmk_optimal. In particular, the energy-degree tradeoff of $D <= tilde(o)(E)$ implies finding solutions with energy $E$ requires time $e^(tilde(Omega)(E))$, and as we'll show, it is possible to achieve such discrepancies via a restricted exponential-time search. Given this, our method produces a sharp energy-runtime tradeoff, indicating there are no nontrivial algorithms that save more than a polylogarithmic factor in the runtime exponent over brute-force search.
 Overall, our approach towards @thrm_sldh_poly_informal and @thrm_sldh_lcd_informal suggest that in the case of problems with brittle solution geometry, conditional landscape obstructions are an extremely powerful tool for proving algorithmic hardness.
 
-The rest of the thesis is organized as follows. We review the low degree heuristic and work with low coordinate degree algorithms in @section_algorithm. In particular, we provide a self-contained introduction to coordinate degree and related decompositions of $L^2$ functions in @section_algorithm_es.
-Our main results then constitute @section_hardness; after giving an overview of our proof strategy, we prove @thrm_sldh_poly_informal in @section_hardness_poly, and likewise prove @thrm_sldh_lcd_informal in @section_hardness_lcd.
+The rest of the thesis is organized as follows.
+We review the low degree heuristic and work with low coordinate degree algorithms in @section_algorithms.
+// In particular, we provide a self-contained introduction to coordinate degree and related decompositions of $L^2$ functions in @section_algorithm_es.
+Our main results then constitute @section_hardness; after giving an overview of our proof strategy, we prove @thrm_sldh_poly_informal in @section_hardness_ldp, and likewise prove @thrm_sldh_lcd_informal in @section_hardness_lcd.
 We conclude in @section_rounding by extending our results to the case of $RR^N$-valued algorithms and finish by discussing directions for future research.
 
-== Notations and Preliminaries
+== Notations and Preliminaries <section_notations>
 
 We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$.
 We abbreviate $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, $f(N) = omega(g(N))$, respectively.
@@ -243,10 +245,6 @@ We use $Normal(mu,sigma^2)$ to denote the scalar Normal distribution with given 
 For $p in [0,1]$ and a pair $(g,g')$ of $N$-dimensional standard Normal random vectors, we say $(g,g')$ are _$p$-correlated_ if $g'$ is distributed as
 $ g' = p g + sqrt(1-p^2) tilde(g), $
 where $tilde(g)$ is an independent copy of $g$.
-
-all $1$-dimensional projections $inn(g,x),inn(g',x)$ have covariance matrix proportional to $mat(1, p; p, 1)$; we denote such a pair by $g' scripts(~)_p g$.
-or, $corr(g,g',p)$
-
 We say $(g,g')$ are _$p$-resampled_ if $g$ is a standard Normal random vector and $g'$ is drawn as follows: for each $i in [N]$ independently,
 $
   g'_i = cases(g_i &"with probability" p\,, "drawn from" Normal(0,1) #h(1.2em)&"with probability" 1-p.)
@@ -254,43 +252,7 @@ $
 We denote such a pair by $resp(g,g',p)$.
 
 In both cases, $g$ and $g'$ are marginally multivariate standard Normal and have entrywise correlation $p$.
-/*
-$
-  #h(1em)
-  PP_corr(g,g',p) (A)
-  #h(1em)
-  limits(PP)_corr(g,g',p) (A)
-  #h(1em)
-  PP^corr(g,g',p) (A)
-  #h(1em)
-  limits(PP)^corr(g,g',p) (A)
-$
 
-$
-  #h(1em)
-  PP_resp(g,g',p) (A)
-  #h(1em)
-  limits(PP)_resp(g,g',p) (A)
-  #h(1em)
-  PP^resp(g,g',p) (A)
-  #h(1em)
-  limits(PP)^resp(g,g',p) (A)
-$
-
-$
-  PP_resp(g,g',p) multiprobcond(
-        g != g',
-        exists x' in Soln(g') "such that",
-        norm(x-x') <= 2sqrt(eta N),
-    )
-  #h(1em)
-  limits(PP)_resp(g,g',p) multiprobcond(
-        g != g',
-        exists x' in Soln(g') "such that",
-        norm(x-x') <= 2sqrt(eta N),
-    ) \
-$
-*/
 
 --- coordinate degree
 
@@ -329,14 +291,14 @@ For our purposes, a _randomized algorithm_ is a measurable function
 $alg colon (g,omega) mapsto x in Sigma_N$
 where $omega in Omega_N$ is an independent random variable in some Polish space $Omega_N$.
 Such an $alg$ is _deterministic_ if it does not depend on $omega$.
-meow We discuss extensions to when $alg$ is $RR^N$-valued in @section_meow and @section_meow.
+meow We discuss extensions to when $alg$ is $RR^N$-valued in @section_hardness_close and @section_rounding.
 
 
 We say $alg$ is a _degree $D$ polynomial algorithm_ if each output coordinate is given by a degree $D$ polynomial in the $N$ entries of $g$, for any fixed $omega$.
 Similarly, $alg$ is a _coordinate degree $D$ algorithm_ if each output coordinate is given by a coordinate degree $D$ function.
 When the degree is unimportant, we refer to such algorithms as _low degree polynomial (LDP)_ or _low coordinate degree (LCD)_, respectively.
 
-== Stability of Low Degree Algorithms
+== Stability of Low Degree Algorithms <section_algorithms>
 
 meow
 
@@ -346,12 +308,12 @@ meow
   $ EE norm(alg(g) - alg(g'))^2 <= 2C D epsilon N, $ <eq_alg_expected_stability>
   and thus for any $eta > 0$,
   $
-    PP( norm(alg(g) - alg(g'))>= 2sqrt(eta N)) <= (C D epsilon) / (2 eta) asymp (D epsilon) / eta.
+    PP( norm(alg(g) - alg(g'))>= 2sqrt(eta N)) <= (C D epsilon) / (2 eta). // prop (D epsilon) / eta.
   $ <eq_alg_stability>
 ] <prop_alg_stability>
 #proof[
-  We show @eq_alg_expected_stability for the case where $alg$ has coordinate degree $D$ and $(g,g')$ are $(1-epsilon)$-resampled; See @huangStrongLowDegree2025[Prop. 1.7] for the case where $alg$ is polynomial.
-  // is @huangStrongLowDegree2025[Prop. 1.7], itself adapted from @gamarnikAlgorithmsBarriersSymmetric2022[Lem. 3.4].
+  We show @eq_alg_expected_stability for the case where $alg$ has coordinate degree $D$ and $(g,g')$ are $(1-epsilon)$-resampled.
+  See @huangStrongLowDegree2025[Prop. 1.7] for the case where $alg$ is polynomial.
   In both cases, Markov's inequality gives @eq_alg_stability.
 
   We follow the proof of @gamarnikAlgorithmsBarriersSymmetric2022[Lem. 3.4].
@@ -370,7 +332,7 @@ meow
   $
     (1-epsilon)^D <= EE inn(alg(g),alg(g')) <= 1.
   $
-  Combining this with the above (and the fact that $1-(1-epsilon)^D <= epsilon D$) yields @eq_alg_expected_stability.
+  Combining this with the above, and using $1-(1-epsilon)^D <= epsilon D$, yields @eq_alg_expected_stability.
 ]
 
 #remark[
@@ -453,7 +415,7 @@ If $alg$ is low degree, then this modification $hat(alg)_r$ of $alg$ is also sta
 
 meow
 Of course, our construction of $hat(alg)_r$ is certainly never polynomial and does not preserve coordinate degree in a controllable way.
-Thus, we cannot directly hope for @thrm_sldh_poly_linear, @thrm_sldh_poly_sublinear, @thrm_sldh_lcd_linear, or @thrm_sldh_lcd_sublinear to hold.
+// Thus, we cannot directly hope for @thrm_sldh_ldp_linear, @thrm_sldh_ldp_sublinear, @thrm_sldh_lcd_linear, or @thrm_sldh_lcd_sublinear to hold.
 However, because this rounding does not drastically alter the stability analysis, we are still able to show that for any $RR^N$-valued low coordinate degree algorithm $alg$ and $r=O(1)$, strong low degree hardness holds for $hat(alg)_r$.
 The same argument proves hardness when $alg$ is a low degree polynomial algorithm; this is omitted for brevity.
 

@@ -42,33 +42,6 @@
 
 #include "4-rounding.typ"
 
-= Section meow <section_meow>
-
-Dummy header for fixing references later
-
-== a <section_algorithm>
-== b <section_algorithm_es>
-== c <section_algorithm_stability>
-== d <section_hardness>
-
-
-== f <section_hardness_poly>
-
-#definition[meow] <def_algorithm>
-
-#proposition[] <prop_correlated_fundamental>
-#proposition[] <prop_resampled_fundamental>
-
-#theorem[] <thrm_sldh_poly_linear>
-#theorem[] <thrm_sldh_poly_sublinear>
-#theorem[] <lem_resampled_solve_prob>
-#theorem[] <thrm_sldh_lcd_linear>
-#theorem[] <thrm_sldh_lcd_sublinear>
-
-$ i $ <eq_def_lcd_epsilon>
-$ i $ <eq_lcd_fundamental>
-$ i $ <eq_def_lcd_punstablecond>
-
 #bibliography(
   "references.bib",
   style: "ieee.csl",
