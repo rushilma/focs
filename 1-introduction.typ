@@ -135,7 +135,7 @@ That is, pairs of solutions are either close to each other, or much further away
 #footnote[This is called the "overlap" gap property because, in the literature, this is often described in terms of the inner product of the solutions, as opposed to the distance between them.]
 Beyond ruling out the existence of pairs of near solutions with $d(x,x') in [nu_1,nu_2]$, a common extension is the _multioverlap OGP ($m$-OGP)_: given an ensemble of $m$ strongly correlated instances, there do not exist $m$-tuples of near solutions all equidistant from each other.
 This extension is often useful to lower the "threshold" at which the OGP starts to appear.
-Once established, the OGP and $m$-OGP, which is intrinsic to the problem, can be used to rule out the success of wide classes of stable algorithms @achlioptasSolutionSpaceGeometryRandom2006 @achlioptasAlgorithmicBarriersPhase2008 @mezardClusteringSolutionsRandom2005 @gamarnikLimitsLocalAlgorithms2014 @gamarnikLowDegreeHardnessRandom2020 @rahmanLocalAlgorithmsIndependent2017 @weinOptimalLowDegreeHardness2020.
+Once established, the OGP and $m$-OGP, which is intrinsic to the problem, can be used to rule out the success of wide classes of stable algorithms @achlioptasSolutionSpaceGeometryRandom2006 @achlioptasAlgorithmicBarriersPhase2008 @mezardClusteringSolutionsRandom2005 @gamarnikLimitsLocalAlgorithms2014 @rahmanLocalAlgorithmsIndependent2017 @weinOptimalLowDegreeHardness2020.
 
 For the NPP, it was expected for decades that the "brittleness" of the solution landscape would be a central barrier in finding successful algorithms to close the statistical-to-computational gap. Mertens wrote in 2001 that any local heuristics, which only looked at fractions of the domain, would fail to outperform random search @mertensPhysicistsApproachNumber2001[#sym.section 4.3].
 This was backed up by the failure of many algorithms based on locally refining Karmarkar-Karp-optimal solutions, such as simulated annealing
@@ -219,7 +219,7 @@ The rest of the thesis is organized as follows. We review the low degree heurist
 Our main results then constitute @section_hardness; after giving an overview of our proof strategy, we prove @thrm_sldh_poly_informal in @section_hardness_poly, and likewise prove @thrm_sldh_lcd_informal in @section_hardness_lcd.
 We conclude in @section_rounding by extending our results to the case of $RR^N$-valued algorithms and finish by discussing directions for future research.
 
-== Conventions and Fundamentals
+== Notations and Preliminaries
 
 We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$.
 We abbreviate $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, $f(N) = omega(g(N))$, respectively.
@@ -292,10 +292,9 @@ $
 Let $gamma_N$ be the $N$-dimensional standard Normal measure on $RR^N$.
 The _$N$-dimensional Gaussian space_ is the space $L2normN$ of $L^2$ functions of $N$ i.i.d. standard Normal r.v.s.
 
-For $g in RR^N$ and $S subeq [N]$.
-
-
 For more details, see @kuniskyLowCoordinateDegree2024a[#sym.section 1.3] or @odonnellAnalysisBooleanFunctions2021[#sym.section 8.3].
+
+For $g in RR^N$ and $S subeq [N]$.
 $
   // #h(1in)
   V_S &:= { f in L^2(gamma_N) : f(g) "depends only on" g_S }, \
@@ -312,10 +311,10 @@ Moreover, we have
 
 @odonnellAnalysisBooleanFunctions2021[Exer. 8.18]
 $
-  p^D EE norm(f(g))^2 <= EE_resp(g,g',p)[f(g) dot f(g')] <= EE norm(f(g))^2
+  p^D EE abs(f(g))^2 <= EE_resp(g,g',p)[f(g) dot f(g')] <= EE abs(f(g))^2
 $
 
-
+= Proof of @thrm_sldh_hat_lcd
 
 @thrm_sldh_hat_lcd(a)
 
@@ -323,20 +322,58 @@ $
 
 --- algorithms
 
-A _(randomized) algorithm_ is a measurable function $alg colon (g,omega) mapsto x in Sigma_N$, where $omega in Omega_N$ is an independent random variable. Such an $alg$ is _deterministic_ if it does not depend on $omega$.
+For our purposes, a _randomized algorithm_ is a measurable function
+$alg colon (g,omega) mapsto x in Sigma_N$
+where $omega in Omega_N$ is an independent random variable in some Polish space $Omega_N$.
+Such an $alg$ is _deterministic_ if it does not depend on $omega$.
+meow We discuss extensions to when $alg$ is $RR^N$-valued in @section_meow and @section_meow.
 
-With the notions of low coordinate degree functions or low degree polynomials in hand, we can consider algorithms based on such functions.
 
-A _polynomial algorithm_ is an algorithm $alg(g,omega)$ where each coordinate of $alg(g,omega)$ is given by a polynomial in the $N$ entries of $g$. If $alg$ is a polynomial algorithm, then it has degree $D$ if each coordinate has degree at most $D$ (with at least one equality).
+We say $alg$ is a _degree $D$ polynomial algorithm_ if each output coordinate is given by a degree $D$ polynomial in the $N$ entries of $g$, for any fixed $omega$.
+Similarly, $alg$ is a _coordinate degree $D$ algorithm_ if each output coordinate is given by a coordinate degree $D$ function.
+When the degree is unimportant, we refer to such algorithms as _low degree polynomial (LDP)_ or _low coordinate degree (LCD)_, respectively.
 
-// We can broaden the notion of polynomial algorithms (with their obvious notion of degree) to algorithms with a well-defined notion of coordinate degree.
+== Stability of Low Degree Algorithms
 
-Suppose an algorithm $alg(g,omega)$ is such that each coordinate of $alg(-,omega)$ is in $L2iid$. Then, the _coordinate degree_ of $alg$ is the maximum coordinate degree of $alg(-,omega)$.
+meow
 
-With @thrm_es_stability and @thrm_poly_stability, we can derive the following algorithmic $L^2$ stability bound.
+#proposition[Low Degree Stability][
+  Suppose $alg colon RR^N -> RR^N$ is a deterministic algorithm with polynomial degree (resp. coordinate degree) $D$ and norm $EE norm(alg(g))^2 <= C N$.
+  Then, for standard Normal r.v.s $g$ and $g'$ which are $(1-epsilon)$-correlated (resp. $(1-epsilon)$-resampled),
+  $ EE norm(alg(g) - alg(g'))^2 <= 2C D epsilon N, $ <eq_alg_expected_stability>
+  and thus for any $eta > 0$,
+  $
+    PP( norm(alg(g) - alg(g'))>= 2sqrt(eta N)) <= (C D epsilon) / (2 eta) asymp (D epsilon) / eta.
+  $ <eq_alg_stability>
+] <prop_alg_stability>
+#proof[
+  We show @eq_alg_expected_stability for the case where $alg$ has coordinate degree $D$ and $(g,g')$ are $(1-epsilon)$-resampled; See @huangStrongLowDegree2025[Prop. 1.7] for the case where $alg$ is polynomial.
+  // is @huangStrongLowDegree2025[Prop. 1.7], itself adapted from @gamarnikAlgorithmsBarriersSymmetric2022[Lem. 3.4].
+  In both cases, Markov's inequality gives @eq_alg_stability.
 
-// Thrm. Stability of randomized algorithms (part 1 of Prop 1.9)
+  We follow the proof of @gamarnikAlgorithmsBarriersSymmetric2022[Lem. 3.4].
+  Assume without loss of generality that $EE norm(alg(g))^2 = 1$.
+  Writing $alg = (alg_1,...,alg_N)$, observe that for $resp(g,g',1-epsilon)$,
+  $
+    EE norm(alg(g)-alg(g'))^2
+    = EE norm(alg(g))^2 + EE norm(alg(g'))^2 - 2 EE inn(alg(g),alg(g'))
+    = 2 - 2 EE inn(alg(g), alg(g')).
+  $
+  By @odonnellAnalysisBooleanFunctions2021[Exer. 8.18], we know that for each $alg_i in V_(<= D)$ we have
+  $
+    (1-epsilon)^D EE abs(alg_i (g))^2 <= EE[alg_i (g) alg_i (g')] <= EE abs(alg_i (g))^2.
+  $
+  Summing this over $i$ gives
+  $
+    (1-epsilon)^D <= EE inn(alg(g),alg(g')) <= 1.
+  $
+  Combining this with the above (and the fact that $1-(1-epsilon)^D <= epsilon D$) yields @eq_alg_expected_stability.
+]
 
+#remark[
+  Note that @prop_alg_stability also holds for randomized algorithms.
+  Namely, if $alg(g,omega)$ is a randomized algorithm with polynomial or coordinate degree $D$ and $EE_(g,omega) norm(alg(g,omega))^2 <= C N$, then applying Markov's inequality to $omega mapsto EE[norm(alg(g,omega))^2 | omega]$ allows us to reduce to the deterministic case, possibly after adjusting $C$.
+] <rmk_randomized_L2_stable>
 
 Throughout the remainder of this thesis, we will make use of the following general results:
 
@@ -382,6 +419,3 @@ Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if t
   The final equality then follows from the bound $h(p) <= 2 p log_2 (1 slash p)$ for $p <= 1 slash 2$.
 ]
 
-== Stability of Low Degree Algorithms
-
--

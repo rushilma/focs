@@ -28,7 +28,7 @@
 
 /// Algorithms
 
-#include "2-algorithms.typ"
+// #include "2-algorithms.typ"
 
 /// Hardness
 
@@ -41,6 +41,16 @@
 /// Rounding
 
 #include "4-rounding.typ"
+
+= Section meow <section_meow>
+
+Dummy header for fixing references later
+
+== a <section_algorithm>
+== b <section_algorithm_es>
+== c <section_algorithm_stability>
+
+#definition[meow] <def_algorithm>
 
 #bibliography(
   "references.bib",

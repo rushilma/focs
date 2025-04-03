@@ -339,6 +339,7 @@ With @thrm_es_stability and @thrm_poly_stability, we can derive the following al
 
 // Thrm. Stability of randomized algorithms (part 1 of Prop 1.9)
 
+/*
 #proposition[Low Degree Stability -- @huangStrongLowDegree2025[Prop. 1.9]][
   Suppose we have a deterministic algorithm $alg$ with degree (resp. coordinate degree) $<= D$ and norm $EE norm(alg(g))^2 <= C N$.
   Then, for inputs $g,g'$ which are $(1-epsilon)$-correlated (resp. $(1-epsilon)$-resampled),
@@ -356,7 +357,7 @@ With @thrm_es_stability and @thrm_poly_stability, we can derive the following al
   Multiplying by $C'$ gives @eq_alg_expected_stability (as $C' <= C N$).
   Finally, @eq_alg_stability follows from Markov's inequality.
 ]
-
+*/
 #remark[
   Note that @prop_alg_stability also holds for randomized algorithms.
   Namely, if $alg(g,omega)$ is a randomized algorithm with polynomial or coordinate degree $D$ and $EE_(g,omega) norm(alg(g,omega))^2 <= C N$, then applying Markov's inequality to $omega mapsto EE[norm(alg(g,omega))^2 | omega]$ allows us to reduce to the deterministic case, possibly after adjusting $C$.
