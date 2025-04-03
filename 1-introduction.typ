@@ -1,6 +1,4 @@
-#import "environments.typ": *
-
-#import "symbols.typ": *
+#import "focs.typ": *
 
 = Introduction
 
@@ -225,14 +223,115 @@ We conclude in @section_rounding by extending our results to the case of $RR^N$-
 
 == Conventions and Fundamentals
 
-We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$. In addition, we write $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, or $f(N) = omega(g(N))$, respectively.
+We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$.
+We write $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, $f(N) = omega(g(N))$, respectively.
+In addition, we write $f(N) prop g(N)$, $f(N) lt.tilde g(N)$, or $f(N) gt.tilde g(N)$ when there exists an $N$-independent constant $C$ such that $f(N)=C g(N)$, $f(N) <= C g(N)$, or $f(N) >= C g(N)$ for all $N$, respectively.
 
-We write $[N] := {1,dots,N}$. If $S subeq [N]$, then $overline(S) := [N] without S$ is the complimentary set of indices. If $x in RR^N$ and $S subeq [N]$, then $x_S$ is the vector with
+We write $[N] := {1,dots,N}$. If $S subeq [N]$, then we write $overline(S) := [N] without S$ for the complimentary set of indices.
+If $x in RR^N$ and $S subeq [N]$, then the _restriction of $x$ to the coordinates in $S$_ is the vector $x_S$ with
 $ (x_S)_i := cases(x_i #h(2em) &i in S\,, 0 &"else.") $
 In particular, for $x,y in RR^N$, $inn(x_S, y) = inn(x,y_S) = inn(x_S,y_S)$.
 
 On $RR^N$, we write $norm(dot)$ for the Euclidean norm, and $ball(x,r) := { y in RR^N : norm(y-x) < r}$ for the Euclidean ball of radius $r$ around $x$.
+
 We use $Normal(mu,sigma^2)$ to denote the scalar Normal distribution with given mean and variance. In addition, we write "i.i.d." to mean independently and identically distributed, and "r.v." to mean random variable (or random vector, if it is clear from context).
+
+For $p in [0,1]$ and a pair $(g,g')$ of standard Normal random vectors, we say $(g,g')$ are _$p$-correlated_ if $g'$ is distributed as
+$ g' = p g + sqrt(1-p^2) tilde(g), $
+where $tilde(g)$ is an independent copy of $g$.
+
+all $1$-dimensional projections $inn(g,x),inn(g',x)$ have covariance matrix proportional to $mat(1, p; p, 1)$; we denote such a pair by $g' scripts(~)_p g$.
+or, $corr(g,g',p)$
+
+We say $(g,g')$ are _$p$-resampled_ if $g$ is a standard Normal random vector and $g'$ is drawn as follows: for each $i in [N]$ independently,
+$
+  g'_i = cases(g_i &"with probability" p\,, "drawn from" Normal(0,1) #h(1.2em)&"with probability" 1-p.)
+$
+We denote such a pair by $resp(g,g',p)$.
+
+In both cases, $g$ and $g'$ are marginally multivariate standard Normal and have entrywise correlation $p$.
+/*
+$
+  #h(1em)
+  PP_corr(g,g',p) (A)
+  #h(1em)
+  limits(PP)_corr(g,g',p) (A)
+  #h(1em)
+  PP^corr(g,g',p) (A)
+  #h(1em)
+  limits(PP)^corr(g,g',p) (A)
+$
+
+$
+  #h(1em)
+  PP_resp(g,g',p) (A)
+  #h(1em)
+  limits(PP)_resp(g,g',p) (A)
+  #h(1em)
+  PP^resp(g,g',p) (A)
+  #h(1em)
+  limits(PP)^resp(g,g',p) (A)
+$
+
+$
+  PP_resp(g,g',p) multiprobcond(
+        g != g',
+        exists x' in Soln(g') "such that",
+        norm(x-x') <= 2sqrt(eta N),
+    )
+  #h(1em)
+  limits(PP)_resp(g,g',p) multiprobcond(
+        g != g',
+        exists x' in Soln(g') "such that",
+        norm(x-x') <= 2sqrt(eta N),
+    ) \
+$
+*/
+
+--- coordinate degree
+
+Let $gamma_N$ be the $N$-dimensional standard Normal measure on $RR^N$.
+The _$N$-dimensional Gaussian space_ is the space $L2normN$ of $L^2$ functions of $N$ i.i.d. standard Normal r.v.s.
+
+For $g in RR^N$ and $S subeq [N]$.
+
+
+@kuniskyLowCoordinateDegree2024a[#sym.section 1.3]
+$
+  V_S &:= { f in L^2(gamma_N) : f(g) "depends only on" g_S }, \
+  V_(<= D) &:= limits(plus.circle.big)_(J subeq [N] \ abs(J) <= D) V_T.
+$
+These subsets describe functions which only depend on some subset of coordinates, or on some bounded number of coordinates.
+Note that $V_[N] = V_(<= N) = L2iid$.
+
+The _coordinate degree_ of a function $f in L^2(gamma_N)$ is defined as $min {D : f in V_(<= D) }$.
+
+Note that if $f$ is a degree $D$ polynomial, then it has coordinate degree at most $D$.
+
+Moreover,
+
+
+
+
+
+
+
+--- algorithms
+
+A _(randomized) algorithm_ is a measurable function $alg colon (g,omega) mapsto x in Sigma_N$, where $omega in Omega_N$ is an independent random variable. Such an $alg$ is _deterministic_ if it does not depend on $omega$.
+
+With the notions of low coordinate degree functions or low degree polynomials in hand, we can consider algorithms based on such functions.
+
+A _polynomial algorithm_ is an algorithm $alg(g,omega)$ where each coordinate of $alg(g,omega)$ is given by a polynomial in the $N$ entries of $g$. If $alg$ is a polynomial algorithm, then it has degree $D$ if each coordinate has degree at most $D$ (with at least one equality).
+
+// We can broaden the notion of polynomial algorithms (with their obvious notion of degree) to algorithms with a well-defined notion of coordinate degree.
+
+Suppose an algorithm $alg(g,omega)$ is such that each coordinate of $alg(-,omega)$ is in $L2iid$. Then, the _coordinate degree_ of $alg$ is the maximum coordinate degree of $alg(-,omega)$.
+
+With @thrm_es_stability and @thrm_poly_stability, we can derive the following algorithmic $L^2$ stability bound.
+
+// Thrm. Stability of randomized algorithms (part 1 of Prop 1.9)
+
 
 Throughout the remainder of this thesis, we will make use of the following general results:
 
@@ -247,7 +346,7 @@ Throughout the remainder of this thesis, we will make use of the following gener
 #proof[
   Observe that conditional on $mu$, the distribution of $Z$ is bounded as
   $
-    phi_(Z|mu) (z) <= 1 / sqrt(2 pi sigma^2) e^(-(z-mu)^2 / (2 sigma^2)) <= (2 pi sigma^2)^(-1 slash 2).
+    phi_(Z|mu) (z) = 1 / sqrt(2 pi sigma^2) e^(-(z-mu)^2 / (2 sigma^2)) <= (2 pi sigma^2)^(-1 slash 2).
   $
   Integrating over $abs(z)<= 2^(-E)$ then gives @eq_normal_smallprob, via
   $
@@ -265,7 +364,7 @@ Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if t
   // https://mathoverflow.net/questions/473730/bounding-a-binomial-coefficient-using-the-binary-entropy-function#mjx-eqn-20
 ] <lem_chernoff_hoeffding>
 #proof[
-  Consider a $Bin(N,p)$ random variable $S$. Summing its PMF from $0$ to $K$, we have
+  Consider a $"Bin"(N,p)$ random variable $S$. Summing its PMF from $0$ to $K$, we have
   $
     1 >= PP(S <= K) = sum_(k <= K) binom(N,k) p^k (1-p)^(N-k) >= sum_(k<= K) binom(N,k) p^K (1-p)^(N-K).
   $
@@ -278,3 +377,6 @@ Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if t
   The final equality then follows from the bound $h(p) <= 2 p log_2 (1 slash p)$ for $p <= 1 slash 2$.
 ]
 
+== Stability of Low Degree Algorithms
+
+-

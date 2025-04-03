@@ -1,6 +1,6 @@
-#import "environments.typ": *
+#import "focs.typ": *
 
-#import "symbols.typ": *
+// #import "symbols.typ": *
 
 = Extensions to Real-Valued Algorithms <section_rounding>
 
@@ -201,7 +201,7 @@ $ p_i (x) := max(PP(round(x)_i != x^*_i), 1/2). $ <eq_rounding_changed_coord>
 We need to guarantee that each $p_i (x) <= 1 slash 2$ for the following alternative description of $round(x)$.
 
 #lemma[
-  Fix $x in RR^N$. Draw $N$ coin flips $I_(x,i) ~ Bern(2p_i (x))$ as well as $N$ signs $S_i ~ "Unif"{plus.minus 1}$, all mutually independent; define the random variable $tilde(x) in Sigma_N$ by
+  Fix $x in RR^N$. Draw $N$ coin flips $I_(x,i) ~ "Bern"(2p_i (x))$ as well as $N$ signs $S_i ~ "Unif"{plus.minus 1}$, all mutually independent; define the random variable $tilde(x) in Sigma_N$ by
   $ tilde(x)_i := S_i I_(x,i) + (1-I_(x,i)) x^*_i. $
   Then $tilde(x) ~ round(x)$.
 ] <lem_random_rounding_altdef>

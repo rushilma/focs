@@ -10,10 +10,13 @@
 
 #let abs(x) = $lr(bar.v #x bar.v)$
 #let inn(x, y) = $lr(angle.l #x, #y angle.r)$
-#let corr(x, y) = $"corr"(#x, #y)$
 #let exp2(x) = $exp_2 lr(paren.l #x paren.r)$
 #let log2(x) = $log_2 lr(paren.l #x paren.r)$
 #let ball(x, y) = $B_(#y)(#x)$
+
+// uniformly denote p-correlated or p-resampled pairs
+#let corr(x, y, p) = $#y scripts(~)_(#p) #x$
+#let resp(x, y, p) = $#y ~ cal(L)_(#p) (#x)$
 
 #let cdeg(x) = $"cdeg"lr(paren.l #x paren.r)$
 
@@ -21,9 +24,6 @@
 #let EE = $upright(bold(E))$
 #let RR = $upright(bold(R))$
 
-#let Unif(x) = $"Unif"lr(paren.l #x paren.r)$
-#let Bern(x) = $"Bern"lr(paren.l #x paren.r)$
-#let Bin(x, y) = $"Bin"lr(paren.l #x, #y paren.r)$
 #let Normal(x, y) = $cal(N)lr(paren.l #x, #y paren.r)$
 #let stdnorm = $Normal(0,I_N)$
 

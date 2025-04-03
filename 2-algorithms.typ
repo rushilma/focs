@@ -1,6 +1,6 @@
-#import "environments.typ": *
+#import "focs.typ": *
 
-#import "symbols.typ": *
+// #import "symbols.typ": *
 
 = Low Degree Algorithms <section_algorithm>
 
@@ -278,9 +278,11 @@ Analogously to the Efron-Stein setting, we can consider the resulting "noise ope
 
 #definition[
   For $p in [0,1]$, the _Gaussian noise operator_ $T_p$ is the linear operator on $L2normN$:
+  /*
   $
     T_p f(x) = EE_(y " " p"-correlated to" x)[f(y)] = EE_(y ~ stdnorm )[ f(p x + sqrt(1-p^2) y)].
   $
+  */
 ]
 
 This operator admits a more classical description in terms of the Ornstein-Uhlenbeck semigroup, but we will not need that connection here.

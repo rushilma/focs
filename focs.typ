@@ -1,15 +1,83 @@
+/// `focs.typ`
+/// Formatting and template for FOCS 2025
+
+/// constants
+
+#let purple = rgb(128, 0, 76)
+#let tabsize = 1.2em
+
+/// theorem environments
+
+#import "@preview/ctheorems:1.1.3": *
+// #show: thmrules.with(qed-symbol: $square$)
+
+#let thmpadding = (top: 0em, bottom: tabsize / 2)
+
+#let thmthesis = thmbox.with(
+  padding: thmpadding,
+  breakable: true,
+  inset: 0em,
+  //namefmt: none, // name => emph([(#name)]),
+  separator: [#h(0.0em)#strong(".")#h(0.2em)],
+  titlefmt: strong,
+  base_level: 1,
+)
+
+#let theorem = thmthesis(
+  "theorem",
+  "Theorem",
+  bodyfmt: emph,
+)
+#let corollary = thmthesis(
+  "theorem",
+  "Corollary",
+  bodyfmt: emph,
+)
+#let lemma = thmthesis(
+  "theorem",
+  "Lemma",
+  bodyfmt: emph,
+)
+#let proposition = thmthesis(
+  "theorem",
+  "Proposition",
+  bodyfmt: emph,
+)
+
+#let definition = thmthesis(
+  "theorem",
+  "Definition",
+)
+#let remark = thmthesis(
+  "theorem",
+  "Remark",
+)
+#let example = thmthesis(
+  "example",
+  "Example",
+).with(numbering: none)
+
+
+#let proof = thmproof(
+  "proof",
+  "Proof",
+  inset: 0em,
+  padding: thmpadding,
+)
+
+
 #let focs(
   doc,
   title: none,
   abstract: none,
-  linkcolor: blue,
-  tabsize: 1.2em,
+  date: datetime.today().display("[month repr:long] [day], [year]"),
+  linkcolor: purple,
 ) = {
   set text(
     font: "Crimson Pro",
     size: 12pt,
     weight: "regular",
-    alternates: true,
+    // alternates: true,
   )
   set page(
     paper: "us-letter",
@@ -20,18 +88,48 @@
   set par(
     justify: true,
     spacing: tabsize,
-    // leading: 1.2em,
+    leading: tabsize / 2,
     first-line-indent: (amount: tabsize, all: false),
   )
 
   // enum
   set enum(numbering: "(a)", indent: tabsize)
 
-  // math equation stuff
+  // references
+  show ref: it => text(fill: linkcolor)[#it]
+
+  // outline
+  show outline.entry.where(level: 1): set outline.entry(fill: " ")
+  show outline.entry.where(level: 1): set block(above: tabsize)
+
+  // heading setup
+  set heading(numbering: "1.1")
+  show heading.where(level: 1): it => {
+    counter(math.equation).update(0)
+    pad(it, bottom: tabsize / 2)
+  }
+  show heading.where(level: 2): it => {
+    pad(it, bottom: tabsize / 3)
+  }
+  show heading.where(level: 3): set heading(numbering: none, outlined: false)
+  show heading.where(level: 3): it => {
+    block(above: tabsize / 3) + strong(it.body + "." + h(0.2em)) + [ ]
+  }
+
+  // math equation setup
+  // double numbering
   set math.equation(
     supplement: none,
-    numbering: (..nums) => numbering("(1.1)", ..nums),
+    numbering: it => {
+      let count = counter(heading.where(level: 1)).at(here()).first()
+      if count > 0 {
+        numbering("(1.1)", count, it)
+      } else {
+        numbering("(1)", it)
+      }
+    },
   )
+  // no numbering for unlabeled equations
   show math.equation: it => {
     if it.block and not it.has("label") [
       #counter(math.equation).update(v => v - 1)
@@ -44,40 +142,7 @@
   show math.equation: set block(breakable: true)
   // set math.accent(size: 150%)
 
-  // references
-  show ref: it => text(fill: linkcolor)[#it]
-
-  // outline
-  show outline.entry.where(level: 1): set outline.entry(fill: " ")
-  show outline.entry.where(level: 1): set block(above: tabsize)
-
-
-  // math numbering
-  set heading(numbering: "1.1")
-  show heading.where(level: 1): it => {
-    counter(math.equation).update(0)
-    pad(it, bottom: tabsize / 2)
-  }
-  show heading.where(level: 2): it => {
-    pad(it, bottom: tabsize / 3)
-  }
-  show heading.where(level: 3): set heading(numbering: none, outlined: false)
-  show heading.where(level: 3): it => {
-    // set heading(numbering: none, outlined: false)
-    block(above: tabsize / 3) + strong(it.body + "." + h(0.2em)) + [ ]
-  }
-
-  set math.equation(
-    numbering: it => {
-      let count = counter(heading.where(level: 1)).at(here()).first()
-      if count > 0 {
-        numbering("(1.1)", count, it)
-      } else {
-        numbering("(1)", it)
-      }
-    },
-  )
-
+  // titlepage
   pad(
     left: -0.01in,
     top: 0.7in,
@@ -90,7 +155,7 @@
       ),
     ),
   )
-  pad(top: 0.15in, align(center, [April 3, 2025]))
+  pad(top: 0.15in, align(center, date))
   pad(
     top: 0.05in,
     x: 0.25in,
@@ -103,3 +168,5 @@
 
   doc
 }
+
+#import "symbols.typ": *

@@ -1,6 +1,6 @@
-#import "environments.typ": *
+#import "focs.typ": *
 
-#import "symbols.typ": *
+// #import "symbols.typ": *
 
 = Proofs of Strong Low Degree Hardness <section_hardness>
 
@@ -410,17 +410,17 @@ As before, we can establish a conditional landscape obstruction for resampled in
 #proof[
   We set up the proof as in @prop_correlated_fundamental.
   For each $x'$ within distance $2 sqrt(eta N)$ of $x$, let
-  $ I_(x') := I(x' in Soln(g')) = I(abs(inn(g',x')) <= 2^(-E)), $
+  $ I_(x') := I{ x' in Soln(g') } = I{ abs(inn(g',x')) <= 2^(-E) }, $
   so that
   $
     p^res_"cond" (x) &=
-    EE[ sum_(norm(x - x') <= 2sqrt(eta N)) EE[I_(x') | g, g != g'] ] \
+    EE[ sum_(norm(x - x') <= 2sqrt(eta N)) EE[I_(x') | g, g != g'] mid(|) g != g' ] \
     &= EE[ sum_(norm(x-x') <= 2sqrt(eta N)) PP(abs(inn(g',x')) <= 2^(-E) | g, g!= g') mid(|) g != g' ].
   $ <eq_resampled_firstmoment>
 
   Again, to bound the inner probability, let $tilde(g)$ be a Normal vector independent of $g$.
   Let $J subeq [N]$ be a random subset where each $i in J$ independently with probability $1-epsilon$, so $g'$ can be represented as
-  $g' = g_J + tilde(g)_(overline(J))$.
+  $g' = g_J + tilde(g)_(overline(J)) tilde(g)_(#h(1pt)overline(J))$.
   For a fixed $x'$ and conditional on $(g,J)$, we know that $inn(tilde(g)_(overline(J)),x')$ is $Normal(0,N-abs(J))$ and $inn(g_J,x')$ is deterministic. That is,
   $
     inn(g',x') | (g,J) ~ Normal(inn(g_J,x'), N - abs(J)).
