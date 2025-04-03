@@ -176,6 +176,7 @@ Our proof now follows from showing that, for appropriate choices of $epsilon$ an
 The former is controlled by @prop_alg_stability, so all that remains is to control the latter.
 To this end, we start by bounding the size of neighborhoods on $Sigma_N$.
 
+/*
 #proposition[Hypercube Neighborhood Size][
   Fix $x in Sigma_N$, and let $eta <= 1 slash 2$. Then the number of $x'$ within distance $2 sqrt(eta N)$ of $x$ is bounded by
   $
@@ -228,6 +229,7 @@ Thus, within a small neighborhood of any $x in Sigma_N$, the number of nearby po
 
   Finally, by @lem_hypercube_counting, the number of terms in the sum @eq_correlated_firstmoment is bounded by $exp_2 (2 eta log_2 (1 slash eta)N)$, so given that @eq_correlated_lowprob is independent of $g$, we deduce @eq_correlated_lowprob_disp.
 ]
+*/
 
 With this obstruction in hand, we can turn to showing strong low degree hardness for polynomial algorithms.
 We start with hardness for linear energy levels, $E=Theta(N)$; this corresponds to the statistically optimal regime, as per @karmarkarProbabilisticAnalysisOptimum1986.
@@ -394,6 +396,7 @@ This restriction on $epsilon$ stops us from showing hardness for algorithms with
 
 As before, we can establish a conditional landscape obstruction for resampled instances via a first moment computation. Here, we need to condition on the resampled instance being different, as otherwise the probability in question can be made to be 1 if $x$ was chosen to solve $g$.
 
+/*
 #proposition[Fundamental Estimate -- Resampled Case][
   Assume that $(g,g')$ are $(1-epsilon)$-resampled standard Normal vectors.
   Then, for any $x$ such that $(g',x)$ are conditionally independent given $g$,
@@ -432,7 +435,7 @@ As before, we can establish a conditional landscape obstruction for resampled in
 
   By @lem_hypercube_counting, the number of terms in the sum @eq_resampled_firstmoment is bounded by $exp_2 (2 eta log_2 (1 slash eta)N)$, so summing @eq_resampled_lowprob over these terms yields @eq_resampled_lowprob_disp.
 ]
-
+*/
 Note that in contrast to @prop_correlated_fundamental, this bound does not involve $epsilon$ explicitly, but the condition $g!= g'$ requires $epsilon = omega(1 slash N)$ to hold almost surely, by @lem_sdiff_prob.
 
 // Linear case

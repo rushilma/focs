@@ -12,7 +12,8 @@
 #let inn(x, y) = $lr(angle.l #x, #y angle.r)$
 #let exp2(x) = $exp_2 lr(paren.l #x paren.r)$
 #let log2(x) = $log_2 lr(paren.l #x paren.r)$
-#let ball(x, y) = $B_(#y)(#x)$
+#let ball(x, y) = $B(#x,#y)$ // $B_(#y) (#x)$
+#let bball(x, y) = $B_Sigma (#x,#y)$ // $B_(#y) (#x)$
 
 // uniformly denote p-correlated or p-resampled pairs
 #let corr(x, y, p) = $#y scripts(~)_(#p) #x$

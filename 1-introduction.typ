@@ -232,10 +232,15 @@ $ (x_S)_i := cases(x_i #h(2em) &i in S\,, 0 &"else.") $
 In particular, for $x,y in RR^N$, $inn(x_S, y) = inn(x,y_S) = inn(x_S,y_S)$.
 
 On $RR^N$, we write $norm(dot)$ for the Euclidean norm, and $ball(x,r) := { y in RR^N : norm(y-x) < r}$ for the Euclidean ball of radius $r$ around $x$.
+In addition, we write
+$
+  bball(x,r) := ball(x,r) inter Sigma_N = { y in Sigma_N : norm(y-x) < r },
+$
+to denote points on $Sigma_N$ within distance $r$ of $x$.
 
 We use $Normal(mu,sigma^2)$ to denote the scalar Normal distribution with given mean and variance. In addition, we write "i.i.d." to mean independently and identically distributed, and "r.v." to mean random variable (or random vector, if it is clear from context).
 
-For $p in [0,1]$ and a pair $(g,g')$ of standard Normal random vectors, we say $(g,g')$ are _$p$-correlated_ if $g'$ is distributed as
+For $p in [0,1]$ and a pair $(g,g')$ of $N$-dimensional standard Normal random vectors, we say $(g,g')$ are _$p$-correlated_ if $g'$ is distributed as
 $ g' = p g + sqrt(1-p^2) tilde(g), $
 where $tilde(g)$ is an independent copy of $g$.
 
@@ -314,8 +319,6 @@ $
   p^D EE abs(f(g))^2 <= EE_resp(g,g',p)[f(g) dot f(g')] <= EE abs(f(g))^2
 $
 
-= Proof of @thrm_sldh_hat_lcd
-
 @thrm_sldh_hat_lcd(a)
 
 
@@ -375,47 +378,82 @@ meow
   Namely, if $alg(g,omega)$ is a randomized algorithm with polynomial or coordinate degree $D$ and $EE_(g,omega) norm(alg(g,omega))^2 <= C N$, then applying Markov's inequality to $omega mapsto EE[norm(alg(g,omega))^2 | omega]$ allows us to reduce to the deterministic case, possibly after adjusting $C$.
 ] <rmk_randomized_L2_stable>
 
-Throughout the remainder of this thesis, we will make use of the following general results:
 
-// Normal probability lemma
+meow Consider algorithm outputting points close to solution
 
-#lemma[Normal Small-Probability Estimate][
-  Let $E,sigma^2 > 0$, and suppose $Z | mu ~ Normal(mu,sigma^2)$. Then
+
+/*
+Consider the event that the $RR^N$-valued algorithm $alg$ outputs a point close to a solution for an instance $g$:
+$
+  S_"close" (r) = multiset(
+    exists hat(x) in Soln(g) "s.t.",
+    alg(g) in ball(hat(x), r)
+  ) = {ball(alg(g), r) inter Soln(g) != emptyset }.
+$
+*/
+Throughout this section, fix a distance $r=O(1)$.
+
+Note that since $r$ is of constant order, we can convert $alg$ into a $Sigma_N$-valued algorithm by first rounding the $alg(g)$ into the solid binary hypercube and then picking the best corner of $Sigma_N$ within constant distance of this output.
+Such a modification requires additionally calculating the energy of $O(1)$-many points on $Sigma_N$, adding only $O(N)$ operations.
+
+We can formalize this construction as follows.
+Let $clip colon RR^N -> [-1,1]^N$ be the function which rounds $x in RR^N$ into the cube $[-1,1]^N$:
+$
+  clip(x)_i := cases(-1 #h(1em) &x_i <= -1\,, x_i &-1 < x_i < 1\,, 1 &x_i >= 1.)
+$
+Note that $clip$ is $1$-Lipschitz with respect to the Euclidean norm.
+
+// definition of hat alg
+
+#definition[
+  Let $r>0$ and $alg$ be an algorithm. Define the $[-1,1]^N$-valued algorithm $hat(alg)_r$ by
+  #set math.cases(gap: 0.7em)
   $
-    PP(abs(Z) <= 2^(-E) | mu) <= exp_2 (-E - 1 / 2 log_2 (sigma^2) + O(1)).
-  $ <eq_normal_smallprob>
-] <lem_normal_smallprob>
+    hat(alg)_r (g) := cases(
+      limits("argmin")_(x' in bball(clip(alg(g)),r)) abs(inn(g,x')) #h(tabsize) &bball(clip(alg(g)), r) eq.not emptyset\,,
+      clip(alg(g)) &"else".
+  )
+  $ <eq_hat_alg>
+
+  // If $ball(clip(alg(g)),r) inter Sigma_N = emptyset$, then set $hat(alg)_r (g) := clip(alg(g))$, which is necessarily not in $Sigma_N$.
+] <def_hat_alg>
+
+
+If $alg$ is low degree, then this modification $hat(alg)_r$ of $alg$ is also stable.
+
+#lemma[
+  Suppose $alg colon RR^N -> RR^N$ is a deterministic algorithm with polynomial degree (resp. coordinate degree) $D$ and norm $EE norm(alg(g))^2 <= C N$.
+  Then, for $r=O(1)$ and standard Normal r.v.s $g$ and $g'$ which are $(1-epsilon)$-correlated (resp. $(1-epsilon)$-resampled),
+  $hat(alg)_r$ as in @def_hat_alg satisfies,
+  $
+    EE norm(hat(alg)_r (g) - hat(alg)_r (g'))^2 <= 4C D epsilon N + 8 r^2.
+  $ <eq_hat_alg_expectation>
+  Thus for any $eta > 0$.
+  $
+    PP (norm(hat(alg)_r (g) - hat(alg)_r (g')) >= 2 sqrt(eta N)) <= (C D epsilon) / (eta) + (2 r^2) / (eta N).
+  $
+  <eq_hat_alg_stability>
+] <lem_hat_alg_stability>
 #proof[
-  Observe that conditional on $mu$, the distribution of $Z$ is bounded as
+  Observe that by the triangle inequality, $ norm(hat(alg)_r (g) - hat(alg)_r (g'))$ is bounded by
   $
-    phi_(Z|mu) (z) = 1 / sqrt(2 pi sigma^2) e^(-(z-mu)^2 / (2 sigma^2)) <= (2 pi sigma^2)^(-1 slash 2).
+    norm(hat(alg)_r (g) - clip(alg(g))) +
+    norm(clip(alg(g)) - clip(alg(g'))) +
+    norm(clip(alg(g')) - hat(alg)_r (g')) \
+    <= 2r + norm(alg(g) - alg(g')).
   $
-  Integrating over $abs(z)<= 2^(-E)$ then gives @eq_normal_smallprob, via
+  This follows as $clip$ is $1$-Lipschitz and the corner-picking step in @eq_hat_alg only moves $hat(alg)_r (g)$ from $clip(alg(r))$ by at most $r$.
+  By Jensen's inequality, squaring this gives
   $
-    PP(abs(Z) <= 2^(-E)) = integral_(abs(z) <= 2^(-E)) (2 pi sigma^2)^(-1 slash 2) dif z <= 2^(-E - 1 / 2 log_2 (2 pi sigma^2) + 1). #qedhere
+    norm(hat(alg)_r (g) - hat(alg)_r (g'))^2 <=
+    2( 4r^2 + norm(alg(g) - alg(g'))^2).
   $
+  Combining this with @prop_alg_stability gives @eq_hat_alg_expectation, and @eq_hat_alg_stability follows from Markov's inequality.
 ]
 
-Note that @eq_normal_smallprob is a decreasing function of $sigma^2$. Thus, if there exists $gamma$ with $sigma^2 >= gamma > 0$, then @eq_normal_smallprob is bounded by $exp_2(-E - log_2(gamma) slash 2 + O(1))$.
-
-// Chernoff-Hoeffding bound
-
-#lemma[Chernoff-Hoeffding][
-  Suppose that $K <= N slash 2$, and let $h(x)=-x log_2 (x) - (1-x) log_2 (x)$ be the binary entropy function. Then, for $p := K slash N$,
-  $ sum_(k <= K) binom(N,k) <= exp_2 (N h(p)) <= exp_2 (2 N p log_2 (1 / p)). $
-  // https://mathoverflow.net/questions/473730/bounding-a-binomial-coefficient-using-the-binary-entropy-function#mjx-eqn-20
-] <lem_chernoff_hoeffding>
-#proof[
-  Consider a $"Bin"(N,p)$ random variable $S$. Summing its PMF from $0$ to $K$, we have
-  $
-    1 >= PP(S <= K) = sum_(k <= K) binom(N,k) p^k (1-p)^(N-k) >= sum_(k<= K) binom(N,k) p^K (1-p)^(N-K).
-  $
-  The last inequality follows by multiplying each term by $(p slash (1-p))^(K-k)<=1$. Rearranging gives
-  $
-    sum_(k <= K) binom(N,k) &<= p^(-K) (1-p)^(-(N-K)) \ &= exp_2 (-K log_2 (p) - (N-K) log_2 (1-p)) \
-    &= exp_2 (N dot (-K / N log_2 (p) - ((N-K) / N) log_2 (1-p))) \
-    &= exp_2 (N dot (-p log_2 (p) - (1-p) log_2 (1-p)) ) = exp_2 (N h(p)).
-  $
-  The final equality then follows from the bound $h(p) <= 2 p log_2 (1 slash p)$ for $p <= 1 slash 2$.
-]
+meow
+Of course, our construction of $hat(alg)_r$ is certainly never polynomial and does not preserve coordinate degree in a controllable way.
+Thus, we cannot directly hope for @thrm_sldh_poly_linear, @thrm_sldh_poly_sublinear, @thrm_sldh_lcd_linear, or @thrm_sldh_lcd_sublinear to hold.
+However, because this rounding does not drastically alter the stability analysis, we are still able to show that for any $RR^N$-valued low coordinate degree algorithm $alg$ and $r=O(1)$, strong low degree hardness holds for $hat(alg)_r$.
+The same argument proves hardness when $alg$ is a low degree polynomial algorithm; this is omitted for brevity.
 

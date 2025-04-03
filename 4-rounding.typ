@@ -37,6 +37,7 @@ $
   ) = {ball(alg(g), r) inter Soln(g) != emptyset }.
 $
 
+/*
 Note that since $r$ is of constant order, we can convert $alg$ into a $Sigma_N$-valued algorithm by first rounding the $alg(g)$ into the solid binary hypercube and then picking the best corner of $Sigma_N$ within constant distance of this output.
 
 Let $clip colon RR^N -> [-1,1]^N$ be the function which rounds $x in RR^N$ into the cube $[-1,1]^N$:
@@ -96,6 +97,7 @@ Of course, our construction of $hat(alg)_r$ is certainly never polynomial and do
 Thus, we cannot directly hope for @thrm_sldh_poly_linear, @thrm_sldh_poly_sublinear, @thrm_sldh_lcd_linear, or @thrm_sldh_lcd_sublinear to hold.
 However, because this rounding does not drastically alter the stability analysis, we are still able to show that for any $RR^N$-valued low coordinate degree algorithm $alg$ and $r=O(1)$, strong low degree hardness holds for $hat(alg)_r$.
 The same argument proves hardness when $alg$ is a low degree polynomial algorithm; this is omitted for brevity.
+*/
 
 We recall the setup from @section_hardness_lcd.
 Let $g,g'$ be $(1-epsilon)$-resampled standard Normal vectors and define the events
