@@ -1,8 +1,6 @@
 #import "focs.typ": *
 
-// #import "symbols.typ": *
-
-= Extensions to Real-Valued Algorithms <section_rounding>
+== Extensions to Real-Valued Algorithms <section_rounding>
 
 In @section_hardness, we have established strong low degree hardness for both low degree polynomial and low coordinate degree algorithms.
 However, our stability analysis assumed that the algorithms in question were $Sigma_N$-valued.
@@ -173,7 +171,7 @@ Observe that since $hat(p)^cor _"cond"$ makes no reference to any algorithm, the
 
 Note that as $hat(p)^cor_"solve"$ upper bounds $PP(S_"close" (r))$, this argument shows algorithmic hardness for low degree $RR^N$-valued algorithms aiming to output points within constant distance of a solution.
 
-== Truly Random Rounding
+= Truly Random Rounding
 
 While deterministic algorithms fail to get close to NPP solutions, perhaps a randomized rounding scheme could work instead.
 As discussed above, the failure of algorithms finding outputs within a constant distance of a solution motivates considering rounding schemes which are "truly random," in that they change a superconstant number of coordinates.

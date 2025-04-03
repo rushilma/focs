@@ -208,10 +208,8 @@ While related to polynomial degree, this enables us to consider a far broader cl
 
 #theorem[Results of @section_hardness_lcd][
   The NPP exhibits SLDH for coordinate degree $D$ algorithms, for
-  #enum(
-    [$D <= o(N)$ when $E = delta N$ for $delta > 0$;],
-    [$D <= o(E slash log^2 N)$ when $omega(log^2 N) <= E <= o(N)$.],
-  )
+  + $D <= o(N)$ when $E = delta N$ for $delta > 0$;
+  + $D <= o(E slash log^2 N)$ when $omega(log^2 N) <= E <= o(N)$.
 ] <thrm_sldh_lcd_informal>
 
 These results are likely to be the best-possible under the low degree heuristic, which we discuss in @rmk_optimal. In particular, the energy-degree tradeoff of $D <= tilde(o)(E)$ implies finding solutions with energy $E$ requires time $e^(tilde(Omega)(E))$, and as we'll show, it is possible to achieve such discrepancies via a restricted exponential-time search. Given this, our method produces a sharp energy-runtime tradeoff, indicating there are no nontrivial algorithms that save more than a polylogarithmic factor in the runtime exponent over brute-force search.
@@ -224,7 +222,8 @@ We conclude in @section_rounding by extending our results to the case of $RR^N$-
 == Conventions and Fundamentals
 
 We use the standard Bachmann-Landau notations $o(dot), O(dot), omega(dot), Omega(dot), Theta(dot)$, in the limit $N to infinity$.
-We write $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, $f(N) = omega(g(N))$, respectively.
+We abbreviate $f(N) asymp g(N)$, $f(N) << g(N)$, or $f(N) >> g(N)$ when $f(N)=Theta(g(N))$, $f(N) = o(g(N))$, $f(N) = omega(g(N))$, respectively.
+// meow see how much these are used
 In addition, we write $f(N) prop g(N)$, $f(N) lt.tilde g(N)$, or $f(N) gt.tilde g(N)$ when there exists an $N$-independent constant $C$ such that $f(N)=C g(N)$, $f(N) <= C g(N)$, or $f(N) >= C g(N)$ for all $N$, respectively.
 
 We write $[N] := {1,dots,N}$. If $S subeq [N]$, then we write $overline(S) := [N] without S$ for the complimentary set of indices.
@@ -296,10 +295,11 @@ The _$N$-dimensional Gaussian space_ is the space $L2normN$ of $L^2$ functions o
 For $g in RR^N$ and $S subeq [N]$.
 
 
-@kuniskyLowCoordinateDegree2024a[#sym.section 1.3]
+For more details, see @kuniskyLowCoordinateDegree2024a[#sym.section 1.3] or @odonnellAnalysisBooleanFunctions2021[#sym.section 8.3].
 $
+  // #h(1in)
   V_S &:= { f in L^2(gamma_N) : f(g) "depends only on" g_S }, \
-  V_(<= D) &:= limits(plus.circle.big)_(J subeq [N] \ abs(J) <= D) V_T.
+  V_(<= D) &:= sum_(J subeq [N] \ abs(J) <= D) V_T.
 $
 These subsets describe functions which only depend on some subset of coordinates, or on some bounded number of coordinates.
 Note that $V_[N] = V_(<= N) = L2iid$.
@@ -308,11 +308,16 @@ The _coordinate degree_ of a function $f in L^2(gamma_N)$ is defined as $min {D 
 
 Note that if $f$ is a degree $D$ polynomial, then it has coordinate degree at most $D$.
 
-Moreover,
+Moreover, we have
+
+@odonnellAnalysisBooleanFunctions2021[Exer. 8.18]
+$
+  p^D EE norm(f(g))^2 <= EE_resp(g,g',p)[f(g) dot f(g')] <= EE norm(f(g))^2
+$
 
 
 
-
+@thrm_sldh_hat_lcd(a)
 
 
 

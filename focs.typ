@@ -9,10 +9,8 @@
 /// theorem environments
 
 #import "@preview/ctheorems:1.1.3": *
-// #show: thmrules.with(qed-symbol: $square$)
 
 #let thmpadding = (top: 0em, bottom: tabsize / 2)
-
 #let thmthesis = thmbox.with(
   padding: thmpadding,
   breakable: true,
@@ -93,7 +91,7 @@
   )
 
   // enum
-  set enum(numbering: "(a)", indent: tabsize)
+  set enum(numbering: "(a)", spacing: tabsize * 2 / 3, indent: tabsize)
 
   // references
   show ref: it => text(fill: linkcolor)[#it]
